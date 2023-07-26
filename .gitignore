@@ -161,3 +161,4 @@ cython_debug/
 
 *.swp
 token.txt
+__init__.py

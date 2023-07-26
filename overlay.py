@@ -14,11 +14,6 @@ from utils.others     import getIndices
 FPATH = Path(__file__)
 DIR = FPATH.parent
 
-points = {
-        95 : ["point" + str(num) for num in range(1, 32)],
-        110: ["point" + str(num) for num in range(32, 48)]
-        }
-
 attributes = ['Tritium', 'Uranium', 'Aluminum', 'pH', 'Depth to water']
 units = {
         'Tritium': 'kg/mol', 'Uranium': 'kg/mol', 
@@ -82,7 +77,7 @@ def main():
 
         for i, attribute in enumerate(attributes):
             r, c = getIndices(i, ncol)
-            sim_attr = sim[sim['variable'].lower() == attribute.lower()]
+            sim_attr = sim[sim['variable'] == attribute.lower()]
             sim_attr = sim_attr.pivot(index="time", columns="region", values="value")
             sim_attr_avg = sim_attr.mean(axis=1)
             sim_attr_avg.reset_index(inplace=True)
