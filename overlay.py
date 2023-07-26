@@ -75,11 +75,19 @@ def main():
     # plot simulated data 
     files = Path(ipt_sim).glob('*.out')
     for f in files:
-        sim = pd.read_csv(f)
+        sim = pd.read_csv(f, skiprows=2)
+        # change column types, choose the points in the desired wells 
+        # end up with the columns: region, variable, time, value
         sim = modify_df_sim(sim, well)
 
         for i, attribute in enumerate(attributes):
             r, c = getIndices(i, ncol)
+            sim_attr = sim[sim['variable'].lower() == attribute.lower()]
+            sim_attr = sim_attr.pivot(index="time", columns="region", values="value")
+            sim_attr_avg = sim_attr.mean(axis=1)
+            sim_attr_avg.reset_index(inplace=True)
+            axs[r,c].plot(sim_attr_avg['time'], sim_attr_avg['value'])
+
 
     fig.savefig(opt)
 
