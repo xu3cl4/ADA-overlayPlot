@@ -14,7 +14,16 @@ from utils.others     import getIndices
 FPATH = Path(__file__)
 DIR = FPATH.parent
 
+points = {
+        95 : ["point" + str(num) for num in range(1, 32)],
+        110: ["point" + str(num) for num in range(32, 48)]
+        }
+
 attributes = ['Tritium', 'Uranium', 'Aluminum', 'pH', 'Depth to water']
+units = {
+        'Tritium': 'kg/mol', 'Uranium': 'kg/mol', 
+        'Aluminum': 'kg/mol', 'pH': None, 'Depth to water': 'ft'
+        }
 
 def getArguments():
     ''' parse the command-line interface
@@ -27,12 +36,12 @@ def getArguments():
     parser.add_argument('ipt_real', type = str, help="the file path to the real observations")
     parser.add_argument('ipt_sim',  type = str, help="the directory including the .out files to be plotted")
     parser.add_argument('opt',      type = str, help="the file path to store the overlay plot")
-    paresr.add_argument('well',     type = int, help="95 or 110")
+    parser.add_argument('well',     type = int, help="95 or 110")
 
     return parser.parse_args()
 
 def main():
-    ''' the basic structure of the python scripts '''  
+    ''' the basic plotting structure of the python scripts '''  
     args = getArguments()
 
     ipt_real = DIR.joinpath(args.ipt_real)
@@ -44,17 +53,33 @@ def main():
     nrow, ncol = 2, 3
     fig, axs = plt.subplots(nrow, ncol, sharex=True)
 
-    # plot real observations 
-    with open('ipt_real', 'r') as f:
+
+    # plot real observations with labels, legends  
+    ob = pd.read_csv('ipt_real')
+    ob = modify_df_real(ob, well)
+    for i, attribute in enumerate(attributes):
+        r, c = getIndices(i, ncol)
+
+        # labels
+        unit = units[attribute]
+        axs[r,c].set(xlabel=None, ylabel=f"{attribute}{' (' + unit + ')' if unit else ''}")
+            
+        # observations
+        axs[r,c].plot(ob["COLLECTION_DATE"], well[attribute.lower()], ls=' o', ms=1, color='blue', label="observations")
+
+        # legend 
+        if r + c == 0: # only need one legend
+            axs[r,c].legend(loc=1)
+        
+
+    # plot simulated data 
+    files = Path(ipt_sim).glob('*.out')
+    for f in files:
+        sim = pd.read_csv(f)
+        sim = modify_df_sim(sim, well)
+
         for i, attribute in enumerate(attributes):
             r, c = getIndices(i, ncol)
-        
-    # plot simulated data 
-    files = Path(ipt).glob('*.out')
-    for fname in files:
-        with open(fname, 'r') as f:
-            for i, attribute in enumerate(attributes):
-                r, c = getIndices(i, ncol)
 
     fig.savefig(opt)
 
