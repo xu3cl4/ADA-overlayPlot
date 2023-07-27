@@ -52,7 +52,7 @@ def main():
 
 
     # plot real observations with labels, legends  
-    ob = pd.read_csv('ipt_real')
+    ob = pd.read_csv(ipt_real)
     ob = modify_df_real(ob)
     for i, attribute in enumerate(attributes):
         r, c = getIndices(i, ncol)
@@ -62,7 +62,7 @@ def main():
         axs[r,c].set(xlabel=None, ylabel=f"{attribute}{' (' + unit + ')' if unit else ''}")
             
         # observations
-        axs[r,c].plot(ob["COLLECTION_DATE"], well[attribute.lower()], ls=' o', ms=1, color='blue', label="observations")
+        axs[r,c].plot(ob["COLLECTION_DATE"], ob[attribute.lower()], ls='dotted', ms=1, color='blue', label="observations")
 
         # legend 
         if r + c == 0: # only need one legend
@@ -73,6 +73,7 @@ def main():
     files = Path(ipt_sim).glob('*.out')
     for f in files:
         sim = pd.read_csv(f, skiprows=2)
+        print(sim.to_string())
         # change column types, choose the points in the desired wells 
         # end up with the columns: region, variable, time, value
         sim = modify_df_sim(sim, well)
@@ -82,8 +83,9 @@ def main():
             sim_attr = sim[sim['variable'] == attribute.lower()]
             sim_attr = sim_attr.pivot(index="time", columns="region", values="value")
             sim_attr_avg = sim_attr.mean(axis=1)
-            sim_attr_avg.reset_index(inplace=True)
-            axs[r,c].plot(sim_attr_avg['time'], sim_attr_avg['value'])
+            dates = (sim_attr_avg.index).to_series()
+            values = (sim_attr_avg.to_frame())[0]
+            axs[r,c].plot(dates, values)
 
     fig.suptitle(f'{wells[well]}')
     fig.savefig(opt)

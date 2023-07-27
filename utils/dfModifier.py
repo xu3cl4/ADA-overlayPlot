@@ -52,8 +52,9 @@ def modify_df_sim(df, well):
     # make conversions
     df['time'] = df['time'] - ref_1955
     df['time'] = df['time'].apply(timeStamp2datetime)
+    df['time'] = pd.to_datetime(df['time'])
     df['variable'] = df['variable'].map(var_map_sim)
-    
+     
     # drop the unnecessary data (step2: extract the desired period)
     df = df[(df['time'].dt.year >= 1985) & (df['time'].dt.year <= 2025)]
     
