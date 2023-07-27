@@ -32,13 +32,10 @@ def timeStamp2datetime(x: int):
     return datetime.fromtimestamp(x + float(datetime.strptime(str(REFERENCE_DATE), "%Y-%m-%d %H:%M:%S").strftime("%s")))
 
 
-def modify_df_real(df, well):
+def modify_df_real(df):
     df['COLLECTION_DATE'] = pd.to_datetime(df['COLLECTION_DATE'])
-    df = df[df['well'] == well]
-    df.drop(['well'], axis=1, inplace=True)
     for attribute in df.columns: 
-        if attribute in set('COLLECTION_DATE', 'well'):
-            continue 
+        if attribute == 'COLLECTION_DATE': continue 
         df[attribute] = df[attribute]*scaling_real[attribute]
 
     return df 

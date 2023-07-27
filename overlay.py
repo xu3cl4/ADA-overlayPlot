@@ -20,6 +20,8 @@ units = {
         'Aluminum': 'kg/mol', 'pH': None, 'Depth to water': 'ft'
         }
 
+wells = { 95: 'FSB95DR', 110: 'FSB110D'}
+
 def getArguments():
     ''' parse the command-line interface
         the command line takes four required arguments  
@@ -51,7 +53,7 @@ def main():
 
     # plot real observations with labels, legends  
     ob = pd.read_csv('ipt_real')
-    ob = modify_df_real(ob, well)
+    ob = modify_df_real(ob)
     for i, attribute in enumerate(attributes):
         r, c = getIndices(i, ncol)
 
@@ -83,7 +85,7 @@ def main():
             sim_attr_avg.reset_index(inplace=True)
             axs[r,c].plot(sim_attr_avg['time'], sim_attr_avg['value'])
 
-
+    fig.suptitle(f'{wells[well]}')
     fig.savefig(opt)
 
 if __name__ == "__main__":
