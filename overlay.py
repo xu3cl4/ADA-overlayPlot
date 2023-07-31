@@ -18,8 +18,8 @@ DIR = FPATH.parent
 attributes_95 = ['Tritium', 'Uranium', 'Aluminum', 'pH', 'Depth to water']
 attributes_110 = ['Tritium', 'Uranium', 'pH', 'Depth to water']
 units = {
-        'Tritium': 'kg/mol', 'Uranium': 'kg/mol', 
-        'Aluminum': 'kg/mol', 'pH': None, 'Depth to water': 'ft'
+        'Tritium': 'mol/kg', 'Uranium': 'mol/kg', 
+        'Aluminum': 'mol/kg', 'pH': None, 'Depth to water': 'ft'
         }
 
 wells = {95: 'FSB95DR', 110: 'FSB110D'}

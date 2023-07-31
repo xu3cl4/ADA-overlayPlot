@@ -11,7 +11,7 @@ points = {
         }
 
 var_map_sim = {
-            'water table': 'depeth to water', 
+            'water table': 'depth to water', 
             'Tritium aqueous concentration': 'tritium', 
             'UO2++ sorbed concentration': 'uranium', 
             'Al+++ aqueous concentration': 'aluminum', 
@@ -21,9 +21,9 @@ var_map_sim = {
 
 scaling_real = {
             'depth to water': 1, 
-            'tritium': 3.22*1.1e-13, 
-            'uranium': 1, 
-            'aluminum': 1, 
+            'tritium': 3.446263e-14, # X (mol/kg-water) = X (pCi/ml) / (3.22*1.1e-13)
+            'uranium': 1.235525e-8, 
+            'aluminum': 10**(-9), 
             'nitrate': 1, 
             'ph': 1
         }
@@ -46,9 +46,9 @@ def modify_df_sim(df, well):
     df.drop(['ob_name', 'functional'], axis=1, inplace=True)
     df['region'] = df['region'].str.lstrip()
     df['region'] = df['region'].str.replace(r'Well', 'point')
-    df = df[df['region'].isin(points[well])]
+    df = df[df['region'].isin(points[well])].copy()
     
-    df['variable'] = df['variable'].str.lstrip()
+    df['variable'] = df['variable'].copy().str.lstrip()
     df = df[df['variable'].isin(var_map_sim.keys())]
     
     # make conversions
