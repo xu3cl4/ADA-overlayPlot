@@ -89,7 +89,6 @@ def main():
             sim_attr_avg = sim_attr.mean(axis=1)
             dates = (sim_attr_avg.index).to_series()
             values = (sim_attr_avg.to_frame())[0]
-            print(values)
             axs[r,c].plot(dates, values)
 
     fig.suptitle(f'{wells[well]}', y=0.95)

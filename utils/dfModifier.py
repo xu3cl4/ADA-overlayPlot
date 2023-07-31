@@ -47,8 +47,10 @@ def modify_df_sim(df, well):
     df['region'] = df['region'].str.lstrip()
     df['region'] = df['region'].str.replace(r'Well', 'point')
     df = df[df['region'].isin(points[well])]
+    
+    df['variable'] = df['variable'].str.lstrip()
     df = df[df['variable'].isin(var_map_sim.keys())]
-
+    
     # make conversions
     df['time'] = df['time'] - ref_1955
     df['time'] = df['time'].apply(timeStamp2datetime)
