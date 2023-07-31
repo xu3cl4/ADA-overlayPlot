@@ -21,10 +21,10 @@ var_map_sim = {
 
 scaling_real = {
             'depth to water': 1, 
-            'tritium': 3.446263e-14, # X (mol/kg-water) = X (pCi/ml) / (3.22*1.1e-13)
-            'uranium': 1.235525e-8, 
-            'aluminum': 10**(-9), 
-            'nitrate': 1, 
+            'tritium': 3.446263e-14,    # Zexuan: 3.22*1.1e-13 / 1 pCi/mL * 10^3 mL/L * e-12 Ci/pCi * 1/9621 g/Ci * 1/3.01604926 mol/g
+            'uranium': 1.235525e-8,     # 1 pCi/L * e-12 Ci/pCi * 1/(3.4e-7) g/Ci * 1/238.05078826 mol/g  
+            'aluminum': 3.7062377e-8,   # 1 ug/L * e-6 g/ug * 1/26.98154 mol/g
+            'nitrate': 1.6127757645e-5, # 1 mg/L * e-3 g/mg * 1/62.0049 mol/g
             'ph': 1
         }
 
