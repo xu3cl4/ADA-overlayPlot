@@ -15,8 +15,8 @@ from utils.others     import getIndices
 FPATH = Path(__file__)
 DIR = FPATH.parent
 
-attributes_95 = ['Tritium', 'Uranium', 'Aluminum', 'pH', 'Depth to water']
-attributes_110 = ['Tritium', 'Uranium', 'pH', 'Depth to water']
+attributes_95 = ['Tritium', 'Uranium', 'Aluminum', 'pH']
+attributes_110 = ['Tritium', 'Uranium', 'pH']
 units = {
         'Tritium': 'mol/kg', 'Uranium': 'mol/kg', 
         'Aluminum': 'mol/kg', 'pH': None, 'Depth to water': 'ft'
@@ -50,7 +50,7 @@ def main():
     well     = args.well
   
     # create a frame of subplots 
-    nrow, ncol = 2, 3 if well == 95 else 2
+    nrow, ncol = 2, 2
     fig, axs = plt.subplots(nrow, ncol, sharex=True)
 
 
@@ -89,12 +89,12 @@ def main():
             sim_attr_avg = sim_attr.mean(axis=1)
             dates = (sim_attr_avg.index).to_series()
             values = (sim_attr_avg.to_frame())[0]
-            axs[r,c].plot(dates, values)
+            axs[r,c].plot(dates, values, linewidth=0.25)
 
     fig.suptitle(f'{wells[well]}', y=0.95)
     fig.tight_layout()
     
-    if well == 95: fig.delaxes(axs[1,2]) 
+    if well == 110: fig.delaxes(axs[1,1]) 
     
     fig.savefig(opt)
 
