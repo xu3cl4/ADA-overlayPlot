@@ -5,11 +5,19 @@ import pandas as pd
 ref_1955 = 6.16635504e+10
 REFERENCE_DATE = datetime(1955, 1, 1, 0, 0, 0)
 
+# the original range that I averaged over 
+
 points = {
         95 : ["point" + str(num) for num in range(1, 32)],
         110: ["point" + str(num) for num in range(32, 48)]
         }
 
+'''
+points = {
+        95 : ["point" + str(num) for num in range(13, 22)],
+        110: ["point" + str(num) for num in range(35, 43)]
+        }
+'''
 var_map_sim = {
             'water table': 'depth to water', 
             'Tritium aqueous concentration': 'tritium', 
